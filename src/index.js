@@ -6,8 +6,29 @@ const uuid = require('uuid');
 
 const app = express();
 const tmpDir = './tmp';
+const args = process.argv.slice(2);
+const port = args[0] || 3005;
+const authKey = args[1] || 'test';
+
+const getAuthErrorCode = (request) => {
+  const authorizationHeader = request.headers["Authorization"]
+  if (!!authorizationHeader && authorizationHeader.startsWith("Basic ")) {
+    const authValue = authorizationHeader.split(" ")[1]
+    if (authValue === authKey) {
+      return undefined
+    } else {
+      return 403 // Invalid authentication
+    }
+  }
+  return 401
+}
 
 app.get('/', (req, res) => {
+  const authErrorCode = getAuthErrorCode(req)
+  if (!!authErrorCode) {
+    res.status(authErrorCode).send('Unauthorized');
+  }
+
   res.send('Status: OK');
 })
 
@@ -27,6 +48,11 @@ app.use('/getPdfText', (req, res, next) => {
 });
 
 app.post('/getPdfText', async (req, res) => {
+  const authErrorCode = getAuthErrorCode(req)
+  if (!!authErrorCode) {
+    res.status(authErrorCode).send('Unauthorized');
+  }
+
   if (!req.body || req.headers['content-type'] !== 'application/pdf') {
     return res.status(400).send({ error: 'Please upload a PDF file with the correct Content-Type.' });
   }
@@ -45,6 +71,5 @@ app.post('/getPdfText', async (req, res) => {
   }
 });
 
-const port = 3005;
 fs.mkdirSync(tmpDir, { recursive: true });
 app.listen(port, () => console.log(`Server running on port ${port}`));

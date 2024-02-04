@@ -11,5 +11,5 @@ if [[ -z "$COMMIT_HASH" ]]; then
   exit 1
 fi
 
-docker build --platform linux/arm64/v8 . -t $DOCKERHUB_USERNAME/pdftextextractorapi:$COMMIT_HASH
+docker build --platform linux/arm64/v8 . -t $DOCKERHUB_USERNAME/pdftextextractorapi:linux-
 docker push $DOCKERHUB_USERNAME/pdftextextractorapi:$COMMIT_HASH
