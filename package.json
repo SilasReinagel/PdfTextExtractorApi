@@ -8,7 +8,8 @@
     "watch": "npx nodemon src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "docker:build": "docker build -t pdftextextractorapi .",
-    "docker:run": "docker run -p 3005:3005 --name pdftextextractorapi -it pdftextextractorapi"
+    "docker:run": "docker run -p 3005:3005 --name pdftextextractorapi -it pdftextextractorapi",
+    "ghr:upload": "zsh ./push-image-ghr.sh"
   },
   "author": "",
   "license": "ISC",
