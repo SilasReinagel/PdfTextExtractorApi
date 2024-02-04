@@ -26,7 +26,7 @@ const getAuthErrorCode = (request) => {
 app.get('/', (req, res) => {
   const authErrorCode = getAuthErrorCode(req)
   if (!!authErrorCode) {
-    res.status(authErrorCode).send('Unauthorized');
+    return res.status(authErrorCode).send('Unauthorized');
   }
 
   res.send('Status: OK');
@@ -50,7 +50,7 @@ app.use('/getPdfText', (req, res, next) => {
 app.post('/getPdfText', async (req, res) => {
   const authErrorCode = getAuthErrorCode(req)
   if (!!authErrorCode) {
-    res.status(authErrorCode).send('Unauthorized');
+    return res.status(authErrorCode).send('Unauthorized');
   }
 
   if (!req.body || req.headers['content-type'] !== 'application/pdf') {
@@ -71,5 +71,6 @@ app.post('/getPdfText', async (req, res) => {
   }
 });
 
+console.log({ port, authKey });
 fs.mkdirSync(tmpDir, { recursive: true });
 app.listen(port, () => console.log(`Server running on port ${port}`));
