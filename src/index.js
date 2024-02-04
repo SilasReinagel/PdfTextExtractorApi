@@ -11,15 +11,17 @@ const port = args[0] || 3005;
 const authKey = args[1] || 'test';
 
 const getAuthErrorCode = (request) => {
-  const authorizationHeader = request.headers["Authorization"]
+  const authorizationHeader = request.headers["authorization"]
   if (!!authorizationHeader && authorizationHeader.startsWith("Basic ")) {
     const authValue = authorizationHeader.split(" ")[1]
     if (authValue === authKey) {
       return undefined
     } else {
+      console.log('Invalid authentication', { headers: request.headers, authValue, authKey })
       return 403 // Invalid authentication
     }
   }
+  console.log('Unauthed', { headers: request.headers, authKey })
   return 401
 }
 
