@@ -21,5 +21,5 @@ if [[ -z "$COMMIT_HASH" ]]; then
 fi
 
 # Build and push the image using the lowercase username
-docker build . -t ghcr.io/$GHR_USERNAME_LOWER/pdftextextractor:$COMMIT_HASH
+docker build --platform linux/amd64/v3 . -t ghcr.io/$GHR_USERNAME_LOWER/pdftextextractor:$COMMIT_HASH
 docker push ghcr.io/$GHR_USERNAME_LOWER/pdftextextractor:$COMMIT_HASH
